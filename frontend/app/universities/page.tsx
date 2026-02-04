@@ -95,7 +95,7 @@ export default function Universities() {
 
         setLoading(true);
         try {
-            const response = await axios.get(`http://universities.hipolabs.com/search?name=${query}`);
+            const response = await axios.get(`https://universities.hipolabs.com/search?name=${query}`);
             setUniversities(response.data.slice(0, 50)); // Limit to 50 results
         } catch (error) {
             console.error('Error fetching universities', error);
