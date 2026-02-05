@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { GraduationCap } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { toast } from 'sonner';
+import api from '@/lib/api';
 
 export default function Signup() {
     const [loading, setLoading] = useState(false);
@@ -11,18 +13,26 @@ export default function Signup() {
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
 
-    const handleSignup = (e: React.FormEvent) => {
+    const handleSignup = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
-        // Save to localStorage for demo persistence
-        localStorage.setItem('user_email', email);
-        localStorage.setItem('user_name', name);
 
-        // Mock signup delay
-        setTimeout(() => {
-            setLoading(false);
+        try {
+            await api.post('/auth/signup', { email, name });
+
+            // Save to localStorage
+            localStorage.setItem('user_email', email);
+            localStorage.setItem('user_name', name);
+
+            toast.success("Account created! Let's get onboarded.");
             window.location.href = '/onboarding';
-        }, 1000);
+        } catch (error: any) {
+            console.error(error);
+            const message = error.response?.data?.detail || "Registration failed. Try again.";
+            toast.error(message);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (

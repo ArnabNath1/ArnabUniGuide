@@ -25,15 +25,19 @@ def get_sessions(email: str):
         print(f"Error fetching sessions: {e}")
         return []
 
-@router.get("/session/{session_id}")
-def get_session_history(session_id: str):
+@router.get("/session/{email}/{session_id}")
+def get_session_history(email: str, session_id: str):
     try:
-        response = supabase.table("conversations").select("*").eq("id", session_id).execute()
+        # Secure fetch: must match both ID and user_email
+        response = supabase.table("conversations").select("*").eq("id", session_id).eq("user_email", email).execute()
         if not response.data:
-            raise HTTPException(status_code=404, detail="Session not found")
+            raise HTTPException(status_code=404, detail="Session not found or unauthorized")
         return response.data[0]
+    except HTTPException as he:
+        raise he
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        print(f"Error fetching session content: {e}")
+        raise HTTPException(status_code=500, detail="Could not retrieve chat history")
 
 @router.post("/chat")
 def chat_with_counsellor(request: ChatRequest):
@@ -42,8 +46,8 @@ def chat_with_counsellor(request: ChatRequest):
         session_id = request.session_id
         
         if session_id:
-            # Fetch existing history
-            res = supabase.table("conversations").select("messages").eq("id", session_id).execute()
+            # Fetch existing history - Securely verify ownership
+            res = supabase.table("conversations").select("messages").eq("id", session_id).eq("user_email", request.user_email).execute()
             if res.data:
                 history = res.data[0].get("messages", [])
         
@@ -58,8 +62,9 @@ def chat_with_counsellor(request: ChatRequest):
         ]
         
         if session_id:
-            # Update existing session
-            supabase.table("conversations").update({"messages": new_messages}).eq("id", session_id).execute()
+            # Update existing session - Securely verify ownership
+            # We match by ID and user_email to prevent cross-account editing
+            supabase.table("conversations").update({"messages": new_messages}).eq("id", session_id).eq("user_email", request.user_email).execute()
         else:
             # Create new session
             # Use first message as title

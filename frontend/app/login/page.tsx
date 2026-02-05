@@ -4,18 +4,32 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { GraduationCap } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { toast } from 'sonner';
+import api from '@/lib/api';
 
 export default function Login() {
     const [loading, setLoading] = useState(false);
+    const [email, setEmail] = useState('');
 
-    const handleLogin = (e: React.FormEvent) => {
+    const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
-        // Mock login
-        setTimeout(() => {
-            setLoading(false);
+
+        try {
+            await api.post('/auth/login', { email });
+
+            // Save to localStorage
+            localStorage.setItem('user_email', email);
+
+            toast.success("Welcome back!");
             window.location.href = '/dashboard';
-        }, 1000);
+        } catch (error: any) {
+            console.error(error);
+            const message = error.response?.data?.detail || "Login failed. Check your email.";
+            toast.error(message);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -36,7 +50,7 @@ export default function Login() {
                 <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     <div>
                         <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', color: '#9ca3af' }}>Email</label>
-                        <input type="email" required style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1px solid var(--input-border)', background: 'var(--input-bg)', color: 'white' }} />
+                        <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1px solid var(--input-border)', background: 'var(--input-bg)', color: 'white' }} />
                     </div>
                     <div>
                         <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', color: '#9ca3af' }}>Password</label>

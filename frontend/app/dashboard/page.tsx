@@ -54,9 +54,12 @@ export default function Dashboard() {
     }, [messages, loading]);
 
     const loadSession = async (sessionId: string) => {
+        const email = localStorage.getItem('user_email');
+        if (!email) return;
+
         setLoading(true);
         try {
-            const res = await api.get(`/counsellor/session/${sessionId}`);
+            const res = await api.get(`/counsellor/session/${email}/${sessionId}`);
             setMessages(res.data.messages);
             setActiveSessionId(sessionId);
         } catch (e) {
