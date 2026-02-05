@@ -202,7 +202,16 @@ export default function Profile() {
                         </h2>
                         <div className="grid grid-cols-2" style={{ gap: '1rem' }}>
                             <div><label style={labelStyle}>Full Name</label><input type="text" name="name" value={formData.name} onChange={handleChange} style={inputStyle} /></div>
-                            <div><label style={labelStyle}>Email</label><input type="email" name="email" value={formData.email} onChange={handleChange} style={inputStyle} /></div>
+                            <div>
+                                <label style={labelStyle}>Email (Verified)</label>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    value={formData.email}
+                                    readOnly
+                                    style={{ ...inputStyle, background: 'rgba(255,255,255,0.02)', cursor: 'not-allowed', color: '#6b7280' }}
+                                />
+                            </div>
                         </div>
                     </motion.div>
 
