@@ -21,15 +21,24 @@ def update_profile(profile: Profile):
     # For user ease without auth ID, we'll try to match by email.
     
     data = profile.dict()
-    # Remove id if None so Supabase generates it
-    if data.get("id") is None:
-        del data["id"]
-        
-    # Flatten test scores if needed for DB or keep as jsonb. 
-    # Supabase handles JSON nicely if the column is JSONB.
-    # Assuming 'profiles' table structure.
     
-    response = supabase.table("profiles").upsert(data, on_conflict="email").execute()
+    # If no ID is provided, this is a "First Onboarding" attempt
+    if not data.get("id"):
+        # Check if this email is already fully onboarded
+        existing = supabase.table("profiles").select("id").eq("email", data["email"]).execute()
+        if existing.data:
+            # If it exists, we force using that ID to update OR we reject if it's a new onboarding
+            # For strict onboarding flow, we reject if they haven't "logged in" correctly
+            raise HTTPException(status_code=400, detail="Profile already exists for this email. Please login instead.")
+        
+        # Remove id so Supabase generates it
+        if "id" in data:
+            del data["id"]
+        
+        response = supabase.table("profiles").insert(data).execute()
+    else:
+        # This is a regular update from the profile page
+        response = supabase.table("profiles").update(data).eq("id", data["id"]).execute()
     return {"message": "Profile updated successfully", "data": response.data}
 
 @router.post("/parse-cv")

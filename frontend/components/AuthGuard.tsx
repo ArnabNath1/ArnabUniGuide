@@ -9,7 +9,7 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
 
     useEffect(() => {
         // Auth-related pages that don't need a session
-        const publicPaths = ['/signup', '/login', '/', '/onboarding'];
+        const publicPaths = ['/signup', '/login', '/'];
         const isPublicPath = publicPaths.includes(pathname);
 
         const email = localStorage.getItem('user_email');
