@@ -43,10 +43,32 @@ def get_counsellor_response(user_profile: str, user_query: str, history: list = 
     return completion.choices[0].message.content
 
 def parse_cv_to_json(cv_text: str) -> dict:
-    system_prompt = """You are a resume parser. Extract the following fields from the CV text and return ONLY valid JSON.
-    Fields: name, email, current_degree, current_university, gpa, work_experience, research_experience, skills, projects.
-    For test_scores, create a nested object with keys: ielts, toefl, gre, gmat, sat, act.
-    If a field is not found, use an empty string. Do not assume values."""
+    system_prompt = """You are a highly accurate resume parsing assistant. 
+    Analyze the provided CV text and extract the information into the specified JSON format.
+    
+    FIELDS TO EXTRACT:
+    - name: Full name of the candidate.
+    - email: Contact email address.
+    - current_degree: The most recent or ongoing degree (e.g., B.Tech, BSC, Masters).
+    - current_university: The institution for the current/most recent degree.
+    - gpa: Grade point average or percentage.
+    - work_experience: Summary of professional roles and years.
+    - research_experience: Summary of research papers, labs, or academic research.
+    - skills: Technical and soft skills (comma-separated list).
+    - projects: Key academic or professional projects.
+    - test_scores: A nested object containing:
+        - ielts: Overall band score.
+        - toefl: Total score.
+        - gre: Total score (Verbal + Quantitative).
+        - gmat: Total score.
+        - sat: Total score.
+        - act: Composite score.
+    
+    RULES:
+    1. If a value is not explicitly found, use an empty string "".
+    2. Do not invent information.
+    3. Ensure the output is ONLY a valid JSON object.
+    4. For work and research experience, be concise but include the main responsibilities/topics."""
     
     completion = client.chat.completions.create(
         model="llama-3.3-70b-versatile", # Using 8b for reliability

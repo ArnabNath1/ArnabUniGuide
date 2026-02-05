@@ -45,9 +45,11 @@ async def parse_cv(file: UploadFile = File(...)):
         from pdfminer.high_level import extract_text
         text = extract_text(pdf_file)
         
-        print(f"Extracted Text Length: {len(text)}")
+        print(f"DEBUG: Extracted Text Length: {len(text)}")
+        print(f"DEBUG: Text Preview: {text[:200]}...")
         
         if not text.strip():
+             print("DEBUG: Extraction resulted in empty string.")
              raise HTTPException(status_code=400, detail="Could not extract text from PDF. It might be an image-based PDF (scanned).")
 
         extracted_data = parse_cv_to_json(text)

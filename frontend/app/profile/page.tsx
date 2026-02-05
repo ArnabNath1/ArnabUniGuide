@@ -88,10 +88,27 @@ export default function Profile() {
             });
             // Merge parsed data with existing data, handling the nested structure
             const parsed = response.data;
+            // Filter out empty values so we don't overwrite with blanks
+            const cleanParsed: any = {};
+            Object.keys(parsed).forEach(key => {
+                if (parsed[key] !== "" && parsed[key] !== null && parsed[key] !== undefined) {
+                    if (key === 'test_scores') {
+                        cleanParsed[key] = {};
+                        Object.keys(parsed[key]).forEach(subKey => {
+                            if (parsed[key][subKey] !== "") {
+                                cleanParsed[key][subKey] = parsed[key][subKey];
+                            }
+                        });
+                    } else {
+                        cleanParsed[key] = parsed[key];
+                    }
+                }
+            });
+
             setFormData(prev => ({
                 ...prev,
-                ...parsed,
-                test_scores: { ...prev.test_scores, ...(parsed.test_scores || {}) }
+                ...cleanParsed,
+                test_scores: { ...prev.test_scores, ...(cleanParsed.test_scores || {}) }
             }));
             toast.success("CV Parsed Successfully!", {
                 description: "Your profile has been autofilled with AI extraction."

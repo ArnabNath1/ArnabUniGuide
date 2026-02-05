@@ -9,3 +9,4 @@ python-multipart
 jose
 passlib[bcrypt]
 email-validator
+pdfminer.six

@@ -74,11 +74,28 @@ export default function Onboarding() {
             });
             // Merge parsed data
             const parsed = response.data;
+            // Filter out empty values
+            const cleanParsed: any = {};
+            Object.keys(parsed).forEach(key => {
+                if (parsed[key] !== "" && parsed[key] !== null && parsed[key] !== undefined) {
+                    if (key === 'test_scores') {
+                        cleanParsed[key] = {};
+                        Object.keys(parsed[key]).forEach(subKey => {
+                            if (parsed[key][subKey] !== "") {
+                                cleanParsed[key][subKey] = parsed[key][subKey];
+                            }
+                        });
+                    } else {
+                        cleanParsed[key] = parsed[key];
+                    }
+                }
+            });
+
             setFormData(prev => ({
                 ...prev,
-                ...parsed,
-                email: parsed.email || prev.email || 'user@example.com', // Fallback for demo
-                test_scores: { ...prev.test_scores, ...(parsed.test_scores || {}) }
+                ...cleanParsed,
+                email: cleanParsed.email || prev.email || 'user@example.com',
+                test_scores: { ...prev.test_scores, ...(cleanParsed.test_scores || {}) }
             }));
             toast.success("CV Parsed Successfully!", {
                 description: "Review and complete any remaining fields."
