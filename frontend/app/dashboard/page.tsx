@@ -117,7 +117,7 @@ export default function Dashboard() {
     };
 
     const sidebarStyle = {
-        width: sidebarOpen ? '300px' : '0',
+        width: sidebarOpen ? 'clamp(260px, 80vw, 300px)' : '0',
         background: 'var(--card-bg)',
         borderRight: '1px solid var(--card-border)',
         height: '100%',
@@ -130,20 +130,20 @@ export default function Dashboard() {
     };
 
     return (
-        <div style={{ padding: 'var(--header-height) 0 0', height: '100vh', display: 'flex', background: 'var(--background)' }}>
+        <div style={{ padding: 'var(--header-height) 0 0', height: '100vh', display: 'flex', background: 'var(--background)', width: '100%', overflow: 'hidden' }}>
             {/* Sidebar */}
             <div style={sidebarStyle}>
-                <div style={{ padding: '1.5rem', borderBottom: '1px solid var(--card-border)' }}>
+                <div style={{ padding: 'clamp(1rem, 3vw, 1.5rem)', borderBottom: '1px solid var(--card-border)' }}>
                     <button
                         onClick={startNewChat}
                         className="btn btn-primary"
-                        style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', borderRadius: '12px' }}
+                        style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', borderRadius: '12px', fontSize: 'clamp(0.85rem, 2vw, 1rem)' }}
                     >
-                        <Plus size={18} /> New Chat
+                        <Plus size={18} /> <span style={{ display: 'none' }} className="hidden-mobile">New Chat</span><span className="show-mobile">New</span>
                     </button>
                 </div>
 
-                <div style={{ flex: 1, overflowY: 'auto', padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                <div style={{ flex: 1, overflowY: 'auto', padding: 'clamp(0.75rem, 2vw, 1rem)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                     <p style={{ fontSize: '0.75rem', color: '#6b7280', fontWeight: 'bold', marginBottom: '0.5rem', paddingLeft: '0.5rem', letterSpacing: '0.05em' }}>RECENT CONVERSATIONS</p>
                     {sessions.map((session) => (
                         <button
@@ -289,15 +289,15 @@ export default function Dashboard() {
                             type="text"
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
-                            placeholder="Ask anything about your study abroad journey..."
+                            placeholder="Ask about your study abroad journey..."
                             style={{
                                 width: '100%',
-                                padding: '1.5rem 4.5rem 1.5rem 2rem',
+                                padding: 'clamp(1rem, 2.5vw, 1.5rem) clamp(3rem, 10vw, 4.5rem) clamp(1rem, 2.5vw, 1.5rem) clamp(1rem, 3vw, 2rem)',
                                 borderRadius: '30px',
                                 border: '1px solid var(--card-border)',
                                 background: 'var(--card-bg)',
                                 color: 'var(--foreground)',
-                                fontSize: '1.1rem',
+                                fontSize: 'clamp(0.9rem, 2.5vw, 1.1rem)',
                                 outline: 'none',
                                 boxShadow: '0 15px 35px rgba(0,0,0,0.15)',
                                 transition: 'all 0.3s ease'
@@ -309,15 +309,15 @@ export default function Dashboard() {
                             disabled={loading || !input.trim()}
                             style={{
                                 position: 'absolute',
-                                right: '15px',
+                                right: 'clamp(8px, 2vw, 15px)',
                                 top: '50%',
                                 transform: 'translateY(-50%)',
                                 background: 'var(--primary)',
                                 color: 'white',
                                 border: 'none',
                                 borderRadius: '50%',
-                                width: '50px',
-                                height: '50px',
+                                width: 'clamp(44px, 10vw, 50px)',
+                                height: 'clamp(44px, 10vw, 50px)',
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
@@ -328,7 +328,7 @@ export default function Dashboard() {
                             }}
                             className="hover:scale-105 active:scale-95"
                         >
-                            <Send size={22} />
+                            <Send size={20} />
                         </button>
                     </form>
                 </div>

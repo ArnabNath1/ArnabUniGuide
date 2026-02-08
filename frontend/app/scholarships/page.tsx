@@ -29,38 +29,38 @@ export default function Scholarships() {
     };
 
     return (
-        <div style={{ padding: 'var(--header-height) 2rem 2rem', minHeight: '100vh', background: 'var(--background)' }}>
-            <div className="container" style={{ maxWidth: '1000px' }}>
-                <h1 className="text-4xl font-bold text-center" style={{ marginBottom: '2rem', marginTop: '2rem' }}>
+        <div style={{ padding: 'var(--header-height) clamp(1rem, 5vw, 2rem) clamp(1rem, 5vw, 2rem)', minHeight: '100vh', background: 'var(--background)' }}>
+            <div className="container" style={{ maxWidth: '1000px', margin: '0 auto' }}>
+                <h1 className="text-4xl font-bold text-center" style={{ marginBottom: '2rem', marginTop: 'clamp(1rem, 3vw, 2rem)', fontSize: 'clamp(1.75rem, 5vw, 2.5rem)' }}>
                     Find <span style={{ color: 'var(--primary-light)' }}>Scholarships</span>
                 </h1>
 
-                <form onSubmit={handleSearch} style={{ position: 'relative', maxWidth: '600px', margin: '0 auto 3rem', display: 'flex', gap: '1rem' }}>
-                    <div style={{ position: 'relative', flex: 1 }}>
+                <form onSubmit={handleSearch} style={{ position: 'relative', maxWidth: '600px', margin: '0 auto 3rem', display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+                    <div style={{ position: 'relative', flex: 1, minWidth: '200px' }}>
                         <Search style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: '#9ca3af' }} />
                         <input
                             type="text"
-                            placeholder="Search scholarships (e.g. Master in Engineering USA)..."
+                            placeholder="Search scholarships..."
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
                             style={{
                                 width: '100%',
-                                padding: '1rem 1rem 1rem 3rem',
+                                padding: 'clamp(0.75rem, 2vw, 1rem) clamp(0.75rem, 2vw, 1rem) clamp(0.75rem, 2vw, 1rem) clamp(2.5rem, 5vw, 3rem)',
                                 borderRadius: '50px',
                                 border: '1px solid var(--input-border)',
                                 background: 'var(--input-bg)',
                                 color: 'var(--foreground)',
-                                fontSize: '1rem',
+                                fontSize: 'clamp(0.9rem, 2vw, 1rem)',
                                 outline: 'none'
                             }}
                         />
                     </div>
-                    <button type="submit" disabled={loading} className="btn btn-primary" style={{ borderRadius: '50px', padding: '0 2rem' }}>
+                    <button type="submit" disabled={loading} className="btn btn-primary" style={{ borderRadius: '50px', padding: 'clamp(0.75rem, 2vw, 1rem) clamp(1.25rem, 3vw, 2rem)', fontSize: 'clamp(0.85rem, 2vw, 1rem)', whiteSpace: 'nowrap' }}>
                         {loading ? <Loader2 className="animate-spin" /> : 'Search'}
                     </button>
                 </form>
 
-                <div className="grid grid-cols-2" style={{ gap: '1.5rem' }}>
+                <div className="grid grid-cols-2" style={{ gap: 'clamp(1rem, 3vw, 1.5rem)' }}>
                     <AnimatePresence>
                         {scholarships.map((scholarship: any, index: number) => (
                             <motion.div
@@ -70,7 +70,7 @@ export default function Scholarships() {
                                 exit={{ opacity: 0, scale: 0.9 }}
                                 transition={{ duration: 0.2 }}
                                 style={{
-                                    padding: '2rem',
+                                    padding: 'clamp(1.5rem, 4vw, 2rem)',
                                     background: 'var(--card-bg)',
                                     borderRadius: '16px',
                                     border: '1px solid var(--card-border)',

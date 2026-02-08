@@ -178,7 +178,7 @@ export default function Profile() {
     const labelStyle = { fontSize: '0.9rem', fontWeight: 600, color: '#9ca3af' };
 
     return (
-        <div style={{ padding: 'var(--header-height) 2rem 2rem', minHeight: '100vh', background: 'var(--background)' }}>
+        <div style={{ padding: 'var(--header-height) clamp(1rem, 5vw, 2rem) clamp(1rem, 5vw, 2rem)', minHeight: '100vh', background: 'var(--background)' }}>
             <div className="container" style={{ maxWidth: '800px' }}>
                 <header style={{ marginBottom: '3rem', marginTop: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div>

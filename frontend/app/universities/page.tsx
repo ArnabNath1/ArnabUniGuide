@@ -105,44 +105,45 @@ export default function Universities() {
     };
 
     return (
-        <div style={{ padding: 'var(--header-height) 2rem 2rem', minHeight: '100vh', background: 'var(--background)' }}>
+        <div style={{ padding: 'var(--header-height) clamp(1rem, 5vw, 2rem) clamp(1rem, 5vw, 2rem)', minHeight: '100vh', background: 'var(--background)' }}>
             <div className="container" style={{ maxWidth: '1000px', margin: '0 auto' }}>
-                <h1 className="text-4xl font-bold text-center" style={{ marginBottom: '2rem', marginTop: '2rem' }}>
+                <h1 className="text-4xl font-bold text-center" style={{ marginBottom: '2rem', marginTop: 'clamp(1rem, 3vw, 2rem)', fontSize: 'clamp(1.75rem, 5vw, 2.5rem)' }}>
                     Find Your <span style={{ color: 'var(--primary-light)' }}>Target University</span>
                 </h1>
 
                 <form onSubmit={searchUniversities} style={{
                     display: 'flex',
-                    gap: '1rem',
+                    gap: '0.75rem',
                     marginBottom: '3rem',
                     maxWidth: '600px',
-                    margin: '0 auto 3rem'
+                    margin: '0 auto 3rem',
+                    flexWrap: 'wrap'
                 }}>
-                    <div style={{ position: 'relative', flexGrow: 1 }}>
+                    <div style={{ position: 'relative', flexGrow: 1, minWidth: '200px' }}>
                         <Search style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: '#9ca3af' }} />
                         <input
                             type="text"
-                            placeholder="Search by name (e.g. Oxford, Harvard)..."
+                            placeholder="Search by name (e.g. Oxford)..."
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
                             style={{
                                 width: '100%',
-                                padding: '1rem 1rem 1rem 3rem',
+                                padding: 'clamp(0.75rem, 2vw, 1rem) clamp(0.75rem, 2vw, 1rem) clamp(0.75rem, 2vw, 1rem) clamp(2.5rem, 5vw, 3rem)',
                                 borderRadius: '50px',
                                 border: '1px solid var(--input-border)',
                                 background: 'var(--input-bg)',
                                 color: 'var(--foreground)',
-                                fontSize: '1rem',
+                                fontSize: 'clamp(0.9rem, 2vw, 1rem)',
                                 outline: 'none'
                             }}
                         />
                     </div>
-                    <button type="submit" className="btn btn-primary" disabled={loading} style={{ borderRadius: '50px', padding: '0 2rem' }}>
+                    <button type="submit" className="btn btn-primary" disabled={loading} style={{ borderRadius: '50px', padding: 'clamp(0.75rem, 2vw, 1rem) clamp(1.25rem, 3vw, 2rem)', fontSize: 'clamp(0.85rem, 2vw, 1rem)', whiteSpace: 'nowrap' }}>
                         {loading ? 'Searching...' : 'Search'}
                     </button>
                 </form>
 
-                <div className="grid grid-cols-2" style={{ gap: '1.5rem' }}>
+                <div className="grid grid-cols-2" style={{ gap: 'clamp(1rem, 3vw, 1.5rem)' }}>
                     {universities.map((uni, index) => (
                         <motion.div
                             key={`${uni.name}-${index}`}
@@ -150,7 +151,7 @@ export default function Universities() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: index * 0.05 }}
                             style={{
-                                padding: '1.5rem',
+                                padding: 'clamp(1rem, 3vw, 1.5rem)',
                                 background: 'var(--card-bg)',
                                 borderRadius: '16px',
                                 border: '1px solid var(--card-border)',
@@ -162,13 +163,13 @@ export default function Universities() {
                         >
                             <div>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                                    <div style={{ width: '40px', height: '40px', background: 'rgba(255,255,255,0.1)', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1rem' }}>
+                                    <div style={{ width: '40px', height: '40px', background: 'rgba(255,255,255,0.1)', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1rem', flexShrink: 0 }}>
                                         <School size={20} />
                                     </div>
-                                    <span style={{ fontSize: '0.8rem', padding: '0.2rem 0.6rem', background: 'rgba(255,255,255,0.05)', borderRadius: '20px' }}>{uni.country}</span>
+                                    <span style={{ fontSize: 'clamp(0.7rem, 2vw, 0.8rem)', padding: '0.2rem 0.6rem', background: 'rgba(255,255,255,0.05)', borderRadius: '20px' }}>{uni.country}</span>
                                 </div>
-                                <h3 style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>{uni.name}</h3>
-                                <a href={uni.web_pages[0]} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.9rem', color: 'var(--primary-light)', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                <h3 style={{ fontSize: 'clamp(1rem, 2.5vw, 1.2rem)', fontWeight: 'bold', marginBottom: '0.5rem' }}>{uni.name}</h3>
+                                <a href={uni.web_pages[0]} target="_blank" rel="noopener noreferrer" style={{ fontSize: 'clamp(0.8rem, 2vw, 0.9rem)', color: 'var(--primary-light)', display: 'flex', alignItems: 'center', gap: '4px' }}>
                                     Visit Website <ExternalLink size={12} />
                                 </a>
                             </div>
